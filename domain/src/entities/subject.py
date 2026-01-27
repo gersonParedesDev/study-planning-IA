@@ -1,7 +1,7 @@
 from uuid import UUID, uuid4
 from typing import List, Optional
 from pydantic import BaseModel, Field
-from .resource import Resource
+from .resources import Resource
 
 class Subject(BaseModel):
     id: UUID = Field(default_factory=uuid4)
