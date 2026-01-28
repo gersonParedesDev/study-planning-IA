@@ -1,0 +1,23 @@
+{
+  "name": "study-planning-ia-monorepo",
+  "private": true,
+  "scripts": {
+    "---------------- SETUP ----------------": "",
+    "install:all": "yarn install:python && yarn install:next",
+    "install:python": "cd domain && poetry install && cd ../infrastructure && poetry install && cd ../apps/api && poetry install",
+    "install:next": "cd apps/frontend && yarn install",
+
+    "---------------- TESTING ----------------": "",
+    "test:backend": "cd domain && poetry run pytest -v",
+    "test:frontend": "cd apps/frontend && yarn test", 
+    "test:all": "yarn test:backend && yarn test:frontend",
+
+    "---------------- RUNNING ----------------": "",
+    "dev:api": "cd apps/api && poetry run uvicorn main:app --reload --port 8000",
+    "dev:web": "cd apps/frontend && yarn dev",
+    "dev": "concurrently \"yarn dev:api\" \"yarn dev:web\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
