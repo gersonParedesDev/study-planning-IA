@@ -13,11 +13,16 @@ class RegisterUserUseCase:
         if self.user_repo.get_by_email(data.email):
             raise ValueError("email is already registered")
 
-        generated_id = str(uuid.uuid4())
+        generated_id = (uuid.uuid4())
         hashed = self.hasher.hash(data.password)
 
         new_user = User(
             id=generated_id,
+            firstname=data.first_name,
+            lastname=data.last_name,
+            age=data.age,
+            country=data.country,
+            study_field=data.study_field,
             email=data.email,
             username=data.username,
             password=hashed
