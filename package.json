@@ -7,6 +7,11 @@
     "install:python": "cd domain && poetry install && cd ../infrastructure && poetry install && cd ../apps/api && poetry install",
     "install:next": "cd apps/frontend && yarn install",
 
+    "---------------- BUILD (AGREGA ESTO) ----------------": "",
+    "build:domain": "cd domain && poetry build",
+    "build:infra": "cd infrastructure && poetry build", 
+    "build:all": "yarn build:domain && yarn build:infra",
+
     "---------------- TESTING ----------------": "",
     "test:backend": "cd domain && poetry run pytest -v",
     "test:frontend": "cd apps/frontend && yarn test", 
