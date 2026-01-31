@@ -8,4 +8,9 @@ class User(BaseModel):
     username: str
     password: str
     email: EmailStr
+    firstname: str
+    lastname: str
+    age: int = Field(..., gt=18)
+    country: str
+    study_field: str
     subjects: List[Subject] = Field(default_factory=list)
