@@ -25,7 +25,6 @@ build/
 *.egg-info/
 
 # --- Testing (AGREGAR ESTO TAMBIÉN) ---
-# Vi en tu imagen que tenés esta carpeta, tampoco se debe subir
 .pytest_cache/
 .coverage
 htmlcov/

@@ -1,13 +1,8 @@
 from unittest.mock import Mock
 import pytest
-from src.ports.services.password_hasher import PasswordHasher
-from src.ports.repositories.user_repository import UserRepository
-from src.entities.user import User
-
-@pytest.fixture
-def mock_user_repo():
-    repo = Mock(spec=UserRepository)
-    return repo
+from app_domain.ports.services.password_hasher import PasswordHasher
+from app_domain.ports.output.user_repository import UserRepository
+from app_domain.entities.user import User
 
 @pytest.fixture
 def mock_user_repo():
