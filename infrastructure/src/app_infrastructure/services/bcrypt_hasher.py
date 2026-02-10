@@ -1,5 +1,5 @@
 from passlib.context import CryptContext
-from domain.src.ports.services.password_hasher import PasswordHasher
+from app_domain.ports.services.password_hasher import PasswordHasher
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

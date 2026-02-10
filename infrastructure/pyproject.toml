@@ -1,25 +1,31 @@
-[project]
+[tool.poetry]
 name = "infrastructure"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "gersonUb",email = "gersoncabj@gmail.com"}
-]
+authors = ["gersonUb <gersoncabj@gmail.com>"]
 readme = "README.md"
-requires-python = ">=3.12,<4.0"
-dependencies = [
-    "sqlalchemy (>=2.0.46,<3.0.0)",
-    "alembic (>=1.18.1,<2.0.0)",
-    "asyncpg (>=0.31.0,<0.32.0)",
-    "langchain (>=1.2.7,<2.0.0)",
-    "langchain-community (>=0.4.1,<0.5.0)",
-    "langchain-chroma (>=1.1.0,<2.0.0)",
-    "langchain-huggingface (>=1.2.0,<2.0.0)",
-    "ollama (>=0.6.1,<0.7.0)",
-    "passlib[bcrypt] (>=1.7.4,<2.0.0)"
+packages = [
+    { include = "app_infrastructure", from = "src" }
 ]
 
+[tool.poetry.dependencies]
+python = "^3.12"
+sqlalchemy = "^2.0.46"
+alembic = "^1.18.1"
+asyncpg = "^0.31.0"
+langchain = "^1.2.7"
+langchain-community = "^0.4.1"
+langchain-chroma = "^1.1.0"
+langchain-huggingface = "^1.2.0"
+ollama = "^0.6.1"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+email-validator = "^2.3.0"
+app-domain = {path = "../domain", develop = true}
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0.2"
+factory-boy = "^3.3.3"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

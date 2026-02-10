@@ -28,3 +28,7 @@ build/
 .pytest_cache/
 .coverage
 htmlcov/
+
+*.db
+*.sqlite3
+app.db
