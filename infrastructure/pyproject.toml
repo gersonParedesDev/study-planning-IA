@@ -21,6 +21,7 @@ ollama = "^0.6.1"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 email-validator = "^2.3.0"
 app-domain = {path = "../domain", develop = true}
+python-jose = {extras = ["cryptography"], version = "^3.5.0"}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^9.0.2"
