@@ -1,3 +1,4 @@
+from app_domain.dtos.register_user_dto import RegisterUserDTO
 from fastapi import APIRouter, Depends, HTTPException, status
 from apps.api.schemas.users import UserRegisterRequest, UserResponse
 from app_domain.use_cases.register_user import RegisterUserUseCase
@@ -15,10 +16,20 @@ async def register_user(
     use_case: RegisterUserUseCase = Depends(get_register_user_use_case)
 ):
     try:
-        created_user = await use_case.execute(
-            email=request.email, 
-            password=request.password
+
+        user_dto = RegisterUserDTO(
+            email=request.email,
+            password=request.password,
+            first_name=request.firstname,
+            last_name=request.lastname,
+            age=request.age,
+            country=request.country,
+            study_field=request.study_field,
+            username=request.username
         )
+
+        created_user = use_case.execute(user_dto) 
+        
         return created_user
 
     except ValueError as e:

@@ -1,32 +1,49 @@
 version: '3.8'
 
 services:
+  db:
+    image: postgres:15-alpine
+    container_name: study_planning_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin_user
+      POSTGRES_PASSWORD: secret_password
+      POSTGRES_DB: university_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: .docker/dockerfile
+      target: api 
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - ./apps/api:/app/apps/api
+      - ./packages/domain:/app/packages/domain
+      - /app/apps/api/.venv
+    container_name: study-planning-IA-api
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+
   frontend:
     build:
-      context: .. 
+      context: .
       dockerfile: .docker/dockerfile
       target: frontend 
     ports:
-      - "${FRONTEND_PORT}:5173"
+      - "${FRONTEND_PORT:-5173}:5173"
     volumes:
-      - ../apps/frontend:/app
+      - ./apps/frontend:/app
       - /app/node_modules
     container_name: study-planning-IA-frontend
     env_file:
       - ./.env
 
-  api:
-    build:
-      context: ..
-      dockerfile: .docker/dockerfile
-      target: api 
-    ports:
-      - "${API_PORT}:8000"
-    volumes:
-      - ../apps/api:/app/apps/api
-      - ../packages/domain:/app/packages/domain
-      - /app/apps/api/.venv
-      - /app/packages/domain/.venv
-    container_name: study-planning-IA-api
-    env_file:
-      - ./.env
+volumes:
+  postgres_data:

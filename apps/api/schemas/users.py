@@ -1,13 +1,18 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 class UserRegisterRequest(BaseModel):
-    first_name: str
-    last_name: str
+    firstname: str
+    lastname: str
     email: EmailStr
     password: str
+    username: str
+    age: int = Field(..., gt=0)
+    country: str
+    study_field: str
 
 class UserResponse(BaseModel):
     id: str
-    first_name: str
-    last_name: str
+    firstname: str
+    lastname: str
     email: EmailStr
+    username: str
