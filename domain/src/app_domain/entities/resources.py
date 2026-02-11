@@ -2,19 +2,19 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from uuid import UUID, uuid4
-
-class ResourceType(str, Enum):
-    PDF = "pdf"
-    SLIDE = "slide"
-    TEXT_NOTE = "text_note"
-    AUDIO = "audio"
+from app_domain.models.resource_type import ResourceType
 
 @dataclass
 class Resource:
     id: UUID
+    title: str
     filename: str
-    file_path: str
+    url: str
     type: ResourceType
+
+    user_id: UUID
+    subject_id: UUID
+    
     created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def is_heavy_file(self) -> bool:
