@@ -2,8 +2,8 @@ import pytest
 from unittest.mock import Mock
 from app_domain.entities.user import User
 from app_domain.use_cases.register_user import RegisterUserUseCase
-from app_domain.dtos.register_user_dto import RegisterUserDTO
-from app_domain.dtos.user_response_dto import UserResponseDTO
+from app_domain.dtos.input.register_user_dto import RegisterUserDTO
+from app_domain.dtos.output.user_response_dto import UserResponseDTO
 from app_domain.tests.factories.user_factory import UserFactory
 
 def test_should_register_user_successfully(mock_user_repo, mock_hasher):

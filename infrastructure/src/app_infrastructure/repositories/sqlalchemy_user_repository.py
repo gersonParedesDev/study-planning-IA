@@ -17,6 +17,7 @@ class SqlAlchemyUserRepository(UserRepository):
             Subject(
                 id=s.id,
                 name=s.name,
+                user_id=s.user_id,
                 description=s.description
             ) for s in model.subjects
         ]
@@ -32,7 +33,6 @@ class SqlAlchemyUserRepository(UserRepository):
             country=model.country,
             study_field=model.study_field,
             created_at=model.created_at,
-            subjects=domain_subjects
         )
 
     def get_by_id(self, user_id: UUID) -> User | None:

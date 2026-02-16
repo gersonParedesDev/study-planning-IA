@@ -1,15 +1,14 @@
 import uuid
 from typing import List, TYPE_CHECKING
 from datetime import datetime, timezone
-from .enrollment import EnrollmentModel
-from sqlalchemy import String, Integer, DateTime, Table, Column, ForeignKey
+from sqlalchemy import String, Integer, DateTime
 from sqlalchemy.dialects.postgresql import UUID 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 
 if TYPE_CHECKING:
-    from .enrollment import EnrollmentModel
     from .resource import ResourceModel
+    from .subject import SubjectModel
 
 class UserModel(Base):
     __tablename__ = "users"
@@ -32,12 +31,12 @@ class UserModel(Base):
         default=lambda: datetime.now(timezone.utc)
     )
 
-    enrollments: Mapped[List["EnrollmentModel"]] = relationship(
-        secondary="enrollments",
-        back_populates="users" 
+    resources_uploaded: Mapped[List["ResourceModel"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan"
     )
 
-    resources_uploaded: Mapped[List["ResourceModel"]] = relationship(
+    subjects: Mapped[List["SubjectModel"]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan"
     )

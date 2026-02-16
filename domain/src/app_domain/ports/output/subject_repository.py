@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
-from uuid import UUID
+from typing import Optional
 from ...entities.subject import Subject
 
 class SubjectRepository(ABC):
@@ -10,9 +9,5 @@ class SubjectRepository(ABC):
         pass
 
     @abstractmethod
-    def get_by_id(self, subject_id: UUID) -> Optional[Subject]:
-        pass
-
-    @abstractmethod
-    def get_all_by_user_id(self, user_id: UUID) -> List[Subject]:
+    def get_by_name(self, name: str) -> Optional[Subject]:
         pass

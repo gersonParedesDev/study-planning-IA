@@ -3,20 +3,27 @@ name = "api"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "gersonUb",email = "gersoncabj@gmail.com"}
+    {name = "gersonUb", email = "gersoncabj@gmail.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
+
 dependencies = [
     "fastapi (>=0.128.0,<0.129.0)",
     "uvicorn[standard] (>=0.40.0,<0.41.0)",
     "python-dotenv (>=1.2.1,<2.0.0)",
-    "app-domain @ file:///C:/Users/gerso/OneDrive/Escritorio/study-ia/study-planning-IA/domain"
+    "python-multipart (>=0.0.22,<0.0.23)"
 ]
 
+[tool.poetry]
+packages = []
+
+[tool.poetry.dependencies]
+app-domain = { path = "../../domain", develop = true }
+app-infrastructure = { path = "../../infrastructure", develop = true }
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [dependency-groups]
@@ -25,7 +32,3 @@ dev = [
     "httpx (>=0.28.1,<0.29.0)",
     "ruff (>=0.14.14,<0.15.0)"
 ]
-
-[tool.poetry]
-[tool.poetry.dependencies]
-app-domain = {develop = true}

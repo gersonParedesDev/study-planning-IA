@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from typing import Dict
 from jose import jwt
 from app_domain.ports.output.token_provider import TokenProvider
 
@@ -18,3 +19,14 @@ class JwtTokenProvider(TokenProvider):
         encoded_jwt = jwt.encode(to_encode, self.jwt_secret, algorithm=self.algorithm)
         
         return encoded_jwt
+    
+    def decode_token(self, token: str) -> dict:
+        try:
+            payload = jwt.decode(
+                token, 
+                self.jwt_secret, 
+                algorithms=[self.algorithm]
+            )
+            return payload
+        except Exception:
+            raise ValueError("Invalid or expired token")

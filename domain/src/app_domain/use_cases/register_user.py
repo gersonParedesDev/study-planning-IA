@@ -1,9 +1,9 @@
 import uuid
-from app_domain.dtos.register_user_dto import RegisterUserDTO
+from app_domain.dtos.input.register_user_dto import RegisterUserDTO
 from app_domain.entities.user import User
 from app_domain.ports.output.password_hasher import PasswordHasher
 from app_domain.ports.output.user_repository import UserRepository
-from app_domain.dtos.user_response_dto import UserResponseDTO 
+from app_domain.dtos.output.user_response_dto import UserResponseDTO 
 
 class RegisterUserUseCase:
     def __init__(self, user_repository: UserRepository, password_hasher: PasswordHasher):

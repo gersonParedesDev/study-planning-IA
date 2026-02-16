@@ -1,8 +1,8 @@
-from app_domain.dtos.register_user_dto import RegisterUserDTO
+from app_domain.dtos.input.register_user_dto import RegisterUserDTO
 from fastapi import APIRouter, Depends, HTTPException, status
 from apps.api.schemas.users import UserRegisterRequest, UserResponse
 from app_domain.use_cases.register_user import RegisterUserUseCase
-from apps.api.dependencies import get_register_user_use_case
+from apps.api.dependencies.users import get_register_user_use_case
 
 router = APIRouter()
 
