@@ -1,17 +1,24 @@
 from contextlib import asynccontextmanager
+from app_infrastructure.database.models.base import Base
+from app_infrastructure.database.config import engine
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
-from routers import subjects, users, auth
+from apps.api.routers import resources, subjects, users, auth, areas 
 
 load_dotenv()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("🚀 API initializing...")
+
+    Base.metadata.create_all(bind=engine)
+
+    print("✅ Base de datos sincronizada exitosamente.")
+    
     yield
-    print("🛑API are shutting down...")
+    print("🛑 API are shutting down...")
 
 app = FastAPI(
     title="Study Planning University API",
@@ -23,6 +30,7 @@ app = FastAPI(
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -36,6 +44,8 @@ app.add_middleware(
 app.include_router(users.router, prefix="/api/v1/users", tags=["Users"])
 app.include_router(auth.router)
 app.include_router(subjects.router)
+app.include_router(resources.router)
+app.include_router(areas.router)
 
 @app.get("/")
 def health_check():

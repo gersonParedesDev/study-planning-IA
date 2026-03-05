@@ -1,5 +1,7 @@
 from app_domain.dtos.input.register_user_dto import RegisterUserDTO
+from app_domain.entities.user import User
 from fastapi import APIRouter, Depends, HTTPException, status
+from apps.api.dependencies.security import get_current_user
 from apps.api.schemas.users import UserRegisterRequest, UserResponse
 from app_domain.use_cases.register_user import RegisterUserUseCase
 from apps.api.dependencies.users import get_register_user_use_case
@@ -11,7 +13,7 @@ router = APIRouter()
     response_model=UserResponse,
     status_code=status.HTTP_201_CREATED
 )
-async def register_user(
+def register_user(
     request: UserRegisterRequest,
     use_case: RegisterUserUseCase = Depends(get_register_user_use_case)
 ):
@@ -20,8 +22,9 @@ async def register_user(
         user_dto = RegisterUserDTO(
             email=request.email,
             password=request.password,
-            first_name=request.firstname,
-            last_name=request.lastname,
+            firstname=request.firstname,
+            lastname=request.lastname,
+            plan = request.plan,
             age=request.age,
             country=request.country,
             study_field=request.study_field,
@@ -43,3 +46,10 @@ async def register_user(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Error intern server"
         )
+    
+@router.get("/users/me", response_model=UserResponse)
+def get_my_profile(current_user: User = Depends(get_current_user)):
+    """
+    Este endpoint está protegido. Solo puedes entrar si tienes un token válido.
+    """
+    return current_user

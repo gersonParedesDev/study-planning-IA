@@ -10,8 +10,8 @@ if TYPE_CHECKING:
 class Subject:
     id: UUID
     user_id: UUID
+    area_id: UUID
     name: str
-    description: Optional[str] = None
 
     created_at: datetime = field(default_factory=datetime.now)
 

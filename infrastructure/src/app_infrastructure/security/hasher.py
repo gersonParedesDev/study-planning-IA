@@ -1,9 +1,9 @@
 from passlib.context import CryptContext
 from app_domain.ports.output.password_hasher import PasswordHasher 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
-class BcryptHasher(PasswordHasher):
+class Argon2PasswordHasher(PasswordHasher):
     
     def hash(self, password: str) -> str:
         return pwd_context.hash(password)

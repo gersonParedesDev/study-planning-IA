@@ -6,11 +6,11 @@ import os
 from app_domain.entities.user import User
 from app_domain.ports.output.password_hasher import PasswordHasher
 from app_domain.ports.output.token_provider import TokenProvider
-from app_infrastructure.security.hasher import BcryptHasher
+from app_infrastructure.security.hasher import Argon2PasswordHasher
 from app_infrastructure.security.token_provider import JwtTokenProvider
 
 def get_hasher() -> PasswordHasher:
-    return BcryptHasher()
+    return Argon2PasswordHasher()
 
 def get_token_provider() -> TokenProvider:
     secret = os.getenv("JWT_SECRET")

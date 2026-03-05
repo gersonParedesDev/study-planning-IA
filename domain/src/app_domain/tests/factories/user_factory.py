@@ -1,6 +1,6 @@
 import factory 
 from datetime import datetime, timezone
-from app_domain.entities.user import User
+from app_domain.entities.user import PlanType, User
 
 class UserFactory(factory.Factory):
     class Meta:
@@ -12,6 +12,7 @@ class UserFactory(factory.Factory):
     password = factory.Faker("password")
     firstname = factory.Faker("first_name")
     lastname = factory.Faker("last_name")
+    plan = factory.Iterator(PlanType)
     age = factory.Faker("random_int", min=18, max=80)
     country = factory.Faker("country_code")
     study_field = factory.Faker("job")

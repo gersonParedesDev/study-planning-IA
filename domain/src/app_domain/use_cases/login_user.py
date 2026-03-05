@@ -1,10 +1,7 @@
-from typing import Dict
-
 from app_domain.dtos.output.login_output import LoginOutput
 from app_domain.ports.output.user_repository import UserRepository
 from app_domain.ports.output.password_hasher import PasswordHasher
 from app_domain.ports.output.token_provider import TokenProvider
-
 
 class LoginUserUseCase:
     def __init__(
@@ -25,4 +22,11 @@ class LoginUserUseCase:
 
         token = self.token_provider.create_access_token(data={"sub": user.email})
 
-        return LoginOutput(access_token=token)
+        return LoginOutput(
+            id=user.id,
+            access_token=token,
+            firstname=user.firstname,
+            lastname=user.lastname,
+            email=user.email,
+            plan=user.plan
+        )

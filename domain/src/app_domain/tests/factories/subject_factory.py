@@ -8,7 +8,7 @@ class SubjectFactory(factory.Factory):
 
     id = factory.Faker("uuid4")
     user_id = factory.Faker("uuid4")
+    area_id = factory.Faker("uuid4")
     name = factory.Faker("word")
-    description = factory.Faker("sentence")
     
     created_at = factory.LazyAttribute(lambda x: datetime.now(timezone.utc))

@@ -19,11 +19,12 @@ class RegisterUserUseCase:
 
         new_user = User(
             id=generated_id,
-            firstname=data.first_name,
-            lastname=data.last_name,
+            firstname=data.firstname,
+            lastname=data.lastname,
             age=data.age,
             country=data.country,
             study_field=data.study_field,
+            plan = data.plan,
             email=data.email,
             username=data.username,
             password=hashed
@@ -35,8 +36,9 @@ class RegisterUserUseCase:
             id=new_user.id,
             username=new_user.username,
             email=new_user.email,
-            first_name=new_user.firstname,
-            last_name=new_user.lastname,
+            firstname=new_user.firstname,
+            lastname=new_user.lastname,
+            plan = new_user.plan,
             age=new_user.age,
             country=new_user.country,
             study_field=new_user.study_field

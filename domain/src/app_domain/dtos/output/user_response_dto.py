@@ -1,12 +1,15 @@
-from pydantic import BaseModel
+from typing import Optional
+from app_domain.entities.user import PlanType
+from pydantic import BaseModel, EmailStr
 from uuid import UUID
 
 class UserResponseDTO(BaseModel):
     id: UUID
-    username: str
-    email: str
-    first_name: str
-    last_name: str
-    age: int
-    country: str
-    study_field: str
+    email: EmailStr
+    firstname: str
+    lastname: str
+    plan: PlanType
+    study_field: Optional[str] = None
+    username: Optional[str] = None
+    age: Optional[int] = None
+    country: Optional[str] = None

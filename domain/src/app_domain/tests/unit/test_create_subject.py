@@ -9,8 +9,8 @@ def test_should_create_subject_succesfully(mock_subject_repo):
 
     dto = CreateSubjectDTO(
         user_id=subject_data.user_id,
+        area_id=subject_data.area_id,
         name=subject_data.name,
-        description=subject_data.description,
     )
 
     mock_subject_repo.get_by_name.return_value = None
@@ -33,6 +33,7 @@ def test_should_raise_error_if_subject_name_already_exists(mock_subject_repo):
     subject_data = SubjectFactory.build()
     dto = CreateSubjectDTO(
         user_id=subject_data.user_id, 
+        area_id=subject_data.area_id,
         name="Matematica"
     )
 

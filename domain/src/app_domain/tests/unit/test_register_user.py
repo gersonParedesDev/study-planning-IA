@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock
-from app_domain.entities.user import User
+from app_domain.entities.user import PlanType, User
 from app_domain.use_cases.register_user import RegisterUserUseCase
 from app_domain.dtos.input.register_user_dto import RegisterUserDTO
 from app_domain.dtos.output.user_response_dto import UserResponseDTO
@@ -13,8 +13,9 @@ def test_should_register_user_successfully(mock_user_repo, mock_hasher):
         email=user_data.email, 
         username=user_data.username,
         password=user_data.password,
-        first_name=user_data.firstname,
-        last_name=user_data.lastname,
+        firstname=user_data.firstname,
+        lastname=user_data.lastname,
+        plan=user_data.plan,
         age=user_data.age,
         country=user_data.country,
         study_field=user_data.study_field
@@ -45,8 +46,9 @@ def test_should_fail_if_email_already_exists(mock_user_repo, mock_hasher):
         email="busy@test.com", 
         username="new_intruder", 
         password="any_password",
-        first_name="Test",
-        last_name="Intruder",
+        firstname="Test",
+        lastname="Intruder",
+        plan = PlanType.FREE,
         age=20,
         country="AR",
         study_field="CS"
@@ -59,7 +61,6 @@ def test_should_fail_if_email_already_exists(mock_user_repo, mock_hasher):
     
     mock_user_repo.save.assert_not_called()
 
-
 def test_should_register_user_with_hashed_password(mock_user_repo, mock_hasher):
     user_data = UserFactory.build(password="password123")
     
@@ -69,8 +70,9 @@ def test_should_register_user_with_hashed_password(mock_user_repo, mock_hasher):
         email=user_data.email, 
         username=user_data.username,
         password="password123",
-        first_name=user_data.firstname,
-        last_name=user_data.lastname,
+        firstname=user_data.firstname,
+        lastname=user_data.lastname,
+        plan = user_data.plan,
         age=user_data.age,
         country=user_data.country,
         study_field=user_data.study_field
@@ -88,3 +90,15 @@ def test_should_register_user_with_hashed_password(mock_user_repo, mock_hasher):
     assert saved_user_entity.password == "secret_hashed_123"
     
     mock_hasher.hash.assert_called_once_with("password123")
+
+    # 1. Validamos que devuelva el DTO correcto
+    from app_domain.dtos.output.user_response_dto import UserResponseDTO
+    assert isinstance(result, UserResponseDTO)
+    
+    # 2. Validamos que los datos del resultado coincidan con los que mandamos
+    assert result.email == dto.email
+    assert result.username == dto.username
+    assert result.firstname == dto.firstname
+    
+    # 3. SEGURIDAD: Garantizamos que la contraseña NUNCA vuelva en la respuesta
+    assert not hasattr(result, "password")
