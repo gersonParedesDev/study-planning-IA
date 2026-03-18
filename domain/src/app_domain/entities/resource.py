@@ -20,4 +20,5 @@ class Resource:
     resource_type: ResourceType
     filename: str
     file_url: str
+    extracted_text: Optional[str] = None 
     created_at: datetime = field(default_factory=datetime.now) 
