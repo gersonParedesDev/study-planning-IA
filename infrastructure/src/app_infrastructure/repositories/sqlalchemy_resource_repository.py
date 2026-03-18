@@ -25,6 +25,7 @@ class SqlAlchemyResourceRepository(ResourceRepository):
             file_url=resource.file_url,
             filename=resource.filename,
             resource_type=resource.resource_type,
+            extracted_text=resource.extracted_text,
         )
         self.db.add(model)
         self.db.commit()
