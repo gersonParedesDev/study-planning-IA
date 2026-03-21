@@ -1,7 +1,8 @@
 from __future__ import annotations
+from datetime import datetime
 import uuid
-from typing import List, TYPE_CHECKING
-from sqlalchemy import ForeignKey, String
+from typing import List, TYPE_CHECKING, Optional
+from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
@@ -18,6 +19,7 @@ class SubjectModel(Base):
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     area_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("areas.id"), nullable=False)
     name: Mapped[str] = mapped_column(String, index=True, unique=True)
+    exam_date: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
 
     user: Mapped["UserModel"] = relationship(back_populates="subjects")
     area: Mapped["AreaModel"] = relationship(back_populates="subjects")

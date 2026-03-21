@@ -18,6 +18,7 @@ class User:
     firstname: str
     lastname: str
     plan: PlanType
+    university: Optional[str] = None
     username: Optional[str] = None
     study_field: Optional[str] = None 
     age: Optional[int] = None

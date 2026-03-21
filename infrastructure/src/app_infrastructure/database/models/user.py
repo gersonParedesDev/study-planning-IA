@@ -24,6 +24,7 @@ class UserModel(Base):
 
     plan: Mapped[PlanType] = mapped_column(SQLEnum(PlanType), default=PlanType.FREE)
 
+    university: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     username: Mapped[Optional[str]] = mapped_column(String, unique=True, index=True, nullable=True)
     age: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     country: Mapped[Optional[str]] = mapped_column(String, nullable=True)
