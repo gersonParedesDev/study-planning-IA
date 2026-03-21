@@ -28,5 +28,6 @@ class LoginUserUseCase:
             firstname=user.firstname,
             lastname=user.lastname,
             email=user.email,
-            plan=user.plan
+            plan=user.plan,
+            university=user.university,
         )

@@ -14,4 +14,5 @@ export interface AuthResponse {
   lastname: string;
   email: string;
   plan: string;
+  university?: string | null; 
 }

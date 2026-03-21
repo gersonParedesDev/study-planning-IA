@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Sidebar } from "../components/Sidebar";
-import { StatCardGrid, type StatCardProps } from "../components/cards/Statcard";
+import { Sidebar } from "../components/layout/Sidebar";
 import { AddSubjectModal } from "../components/modals/AddSubjectModal";
 import { useAuth } from "../context/AuthContext";
 import { AddCard } from "../components/cards/Addcard";
@@ -8,13 +7,6 @@ import { useSubjects } from "../hooks/useSubjects";
 import { SubjectCard, type SubjectColor } from "../components/cards/Subjectcard";
 import { ConfirmModal } from "../components/modals/ConfirmModal";
 import { useDeleteSubject } from "../hooks/useDeleteSubject";
-
-const INITIAL_STATS: StatCardProps[] = [
-  { icon: "📚", value: 6,      label: "Materias activas",      trend: "+1 nueva" },
-  { icon: "✅", value: 84,     label: "Preguntas respondidas",  trend: "+12 hoy"  },
-  { icon: "⏱️", value: "3.2h", label: "Estudiadas hoy",        trend: "↑ 20%"   },
-  { icon: "🎯", value: "78%",  label: "Promedio general",       trend: "↑ 5pts"  },
-];
 
 const COLORS: SubjectColor[] = ["green", "blue", "purple", "orange", "cyan", "pink"];
 
@@ -56,11 +48,6 @@ export default function HomePage() {
               👋
             </h1>
           </div>
-        </div>
-
-        {/* ── Stats ── */}
-        <div className="mb-12 fadeup [animation-delay:0.08s]">
-          <StatCardGrid cards={INITIAL_STATS} />
         </div>
 
         {/* ── Subjects section ── */}

@@ -8,6 +8,7 @@ interface User {
   lastname: string;
   email: string;
   plan: PlanType;
+  university?: string | null; 
 }
 
 interface AuthContextType {
