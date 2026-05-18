@@ -20,7 +20,10 @@
     "---------------- RUNNING ----------------": "",
     "dev:api": "cd apps/api && poetry run uvicorn main:app --reload --port 8000",
     "dev:web": "cd apps/frontend && yarn dev",
-    "dev": "concurrently \"yarn dev:api\" \"yarn dev:web\""
+    "dev": "concurrently \"yarn api\" \"yarn web\"",
+    "api": "cd apps/api && export PYTHONPATH=$PYTHONPATH:../../domain/src:../../infrastructure/src:../../ && poetry run uvicorn main:app --reload --port 8000",
+    "web": "cd apps/frontend && yarn dev",
+    "shell": "cd apps/api && poetry shell"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"

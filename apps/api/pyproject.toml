@@ -16,7 +16,10 @@ dependencies = [
 ]
 
 [tool.poetry]
-packages = []
+package-mode = false
+
+[tool.poetry.scripts]
+start = "main:start"
 
 [tool.poetry.dependencies]
 app-domain = { path = "../../domain", develop = true }

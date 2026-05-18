@@ -1,0 +1,16 @@
+# Entornos virtuales
+venv/
+.venv/
+env/
+__pycache__/
+
+# Dependencias de Node
+node_modules/
+.npm/
+
+# Builds y logs
+dist/
+build/
+.next/
+*.log
+.git/
