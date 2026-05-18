@@ -11,6 +11,8 @@ class Subject:
     user_id: UUID
     area_id: UUID
     name: str
+    area_name: Optional[str] = None
+    description: Optional[str] = None
     exam_date: Optional[datetime] = None
     created_at: datetime = field(default_factory=datetime.now)
 

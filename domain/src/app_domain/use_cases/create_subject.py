@@ -24,6 +24,8 @@ class CreateSubjectUseCase:
             user_id=data.user_id,
             area_id=data.area_id,
             name=data.name,
+            description=data.description,
+            exam_date=data.exam_date,
         )
         self.subject_repo.save(new_subject)
 
@@ -32,11 +34,14 @@ class CreateSubjectUseCase:
         for r in data.resources:
             extracted_text = None
             try:
-                file_bytes = self.storage.get_file_bytes(r.file_url)
-                if self.extractor.is_image(r.filename):
-                    extracted_text = self.extractor.extract_from_image(file_bytes)
-                else:
-                    extracted_text = self.extractor.extract_from_pdf(file_bytes)
+                if r.file_url:
+                    file_bytes = self.storage.get_file_bytes(r.file_url)
+                    if r.filename and self.extractor.is_image(r.filename):
+                        extracted_text = self.extractor.extract_from_image(file_bytes)
+                    else:
+                        extracted_text = self.extractor.extract_from_pdf(file_bytes)
+                elif r.text_content:
+                    extracted_text = r.text_content
             except Exception:
                 extracted_text = None
 
@@ -44,9 +49,11 @@ class CreateSubjectUseCase:
                 id=uuid.uuid4(),
                 subject_id=subject_id,
                 title=r.title,
+                resource_type=r.resource_type,
+                source_type=r.source_type,
                 file_url=r.file_url,
                 filename=r.filename,
-                resource_type=r.resource_type,
+                text_content=r.text_content,
                 extracted_text=extracted_text,
             )
             self.resource_repo.save(resource)
@@ -57,11 +64,15 @@ class CreateSubjectUseCase:
             user_id=new_subject.user_id,
             area_id=new_subject.area_id,
             name=new_subject.name,
+            description=new_subject.description,
+            exam_date=new_subject.exam_date,
             resources=[
                 ResourceOutputDTO(
                     id=r.id,
                     title=r.title,
                     resource_type=r.resource_type,
+                    source_type=r.source_type,
+                    file_url=r.file_url,
                 ) for r in saved_resources
             ]
         )

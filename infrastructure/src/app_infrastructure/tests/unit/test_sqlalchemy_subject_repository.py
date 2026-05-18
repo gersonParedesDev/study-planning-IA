@@ -11,6 +11,7 @@ def test_save_subject(db_session):
     new_subject_entity = Subject(
         id=uuid.uuid4(),
         user_id=owner.id,
+        area_id=uuid.uuid4(),
         name="Matemática Avanzada",
         description="Cálculo integral y diferencial"
     )

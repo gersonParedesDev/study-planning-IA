@@ -54,3 +54,8 @@ def health_check():
         "message": "Study Planning API is running! 🚀",
         "env": os.getenv("ENVIRONMENT", "unknown")
     }
+
+def start():
+    """Launched with `poetry run start`"""
+    import uvicorn
+    uvicorn.run("apps.api.main:app", host="0.0.0.0", port=8000, reload=True)

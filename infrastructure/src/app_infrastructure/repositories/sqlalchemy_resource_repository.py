@@ -12,9 +12,12 @@ class SqlAlchemyResourceRepository(ResourceRepository):
             id=model.id,
             subject_id=model.subject_id,
             title=model.title,
+            resource_type=model.resource_type,
+            source_type=model.source_type,
             file_url=model.file_url,
             filename=model.filename,
-            resource_type=model.resource_type,
+            text_content=model.text_content,
+            extracted_text=model.extracted_text,
         )
 
     def save(self, resource: Resource) -> Resource:
@@ -22,9 +25,11 @@ class SqlAlchemyResourceRepository(ResourceRepository):
             id=resource.id,
             subject_id=resource.subject_id,
             title=resource.title,
+            resource_type=resource.resource_type,
+            source_type=resource.source_type,
             file_url=resource.file_url,
             filename=resource.filename,
-            resource_type=resource.resource_type,
+            text_content=resource.text_content,
             extracted_text=resource.extracted_text,
         )
         self.db.add(model)

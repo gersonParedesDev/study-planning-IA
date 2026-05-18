@@ -16,5 +16,8 @@ class GetSubjectsByUserUseCase:
                 user_id=subject.user_id,
                 area_id=subject.area_id,
                 name=subject.name,
+                area_name=subject.area_name,
+                description=subject.description,
+                exam_date=subject.exam_date,    
             ) for subject in subjects
         ]

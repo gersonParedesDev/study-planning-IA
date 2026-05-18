@@ -24,3 +24,7 @@ class SubjectRepository(ABC):
     @abstractmethod
     def delete_by_id(self, subject_id: UUID) -> None:
         pass
+
+    @abstractmethod
+    def update(self, subject: Subject) -> Subject:
+        pass

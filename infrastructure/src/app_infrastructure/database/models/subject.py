@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from .resource import ResourceModel
     from .user import UserModel
     from .area import AreaModel
+    from .subject_unit import SubjectUnitModel  # 👈
 
 class SubjectModel(Base):
     __tablename__ = "subjects"
@@ -19,12 +20,17 @@ class SubjectModel(Base):
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     area_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("areas.id"), nullable=False)
     name: Mapped[str] = mapped_column(String, index=True, unique=True)
+    description: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     exam_date: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
 
     user: Mapped["UserModel"] = relationship(back_populates="subjects")
     area: Mapped["AreaModel"] = relationship(back_populates="subjects")
 
     resources: Mapped[List["ResourceModel"]] = relationship(
-        back_populates="subject", 
+        back_populates="subject",
+        cascade="all, delete-orphan"
+    )
+    units: Mapped[List["SubjectUnitModel"]] = relationship(
+        back_populates="subject",
         cascade="all, delete-orphan"
     )

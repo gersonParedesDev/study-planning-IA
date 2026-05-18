@@ -8,6 +8,7 @@ from app_infrastructure.repositories.sqalchemy_subject_repository import SqlAlch
 from .database import get_db
 from app_domain.use_cases.get_subjects_by_user import GetSubjectsByUserUseCase
 from app_domain.use_cases.delete_subject import DeleteSubjectUseCase
+from app_domain.use_cases.update_subject import UpdateSubjectUseCase
 from app_infrastructure.services.document_extractor import PyMuPDFExtractor
 from app_infrastructure.services.minio_storage import MinioFileStorage
 
@@ -35,3 +36,8 @@ def get_delete_subject_use_case(
     repo: SubjectRepository = Depends(get_subject_repository)
 ) -> DeleteSubjectUseCase:
     return DeleteSubjectUseCase(repo)
+
+def get_update_subject_use_case(
+    repo: SubjectRepository = Depends(get_subject_repository)
+) -> UpdateSubjectUseCase:
+    return UpdateSubjectUseCase(repo)
