@@ -17,19 +17,19 @@ export function SidebarUserCard({ collapsed }: Props) {
   return (
     <button
       onClick={() => navigate(PATHS.PROFILE)}
-      className="w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#111620] transition-all duration-200"
+      className="w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-study-surface transition-colors"
     >
       <div
-        className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-medium text-[#080b10] flex-shrink-0"
-        style={{ background: 'linear-gradient(135deg, #4fffb0, #63a0ff)' }}
+        className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-study-bg flex-shrink-0"
+        style={{ background: 'linear-gradient(135deg, var(--theme-accent), #63a0ff)' }}
       >
         {initials}
       </div>
       {!collapsed && (
         <div className="flex-1 text-left overflow-hidden">
-          <div className="text-xs text-[#e8eaf0] truncate">{user?.firstname}</div>
-          <div className="text-[10px] text-[#5a6478] truncate">
-            {user?.plan?.toUpperCase()} · {user?.university ?? 'Sin universidad'}
+          <div className="text-xs text-study-text font-semibold truncate">{user?.firstname} {user?.lastname}</div>
+          <div className="text-[9px] text-study-muted uppercase tracking-wider truncate font-medium">
+            {user?.plan || 'FREE'} · {user?.university || 'Sin Universidad'}
           </div>
         </div>
       )}

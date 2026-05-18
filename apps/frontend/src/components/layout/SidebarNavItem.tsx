@@ -9,57 +9,74 @@ type Props = {
   collapsed: boolean;
 };
 
-export function SidebarNavItem({ icon: Icon, label, path, badge, collapsed }: Props) {
+export function SidebarNavItem({
+  icon: Icon,
+  label,
+  path,
+  badge,
+  collapsed,
+}: Props) {
   const navigate = useNavigate();
   const location = useLocation();
+
   const isActive = location.pathname === path;
 
   return (
     <button
       onClick={() => navigate(path)}
       title={collapsed ? label : undefined}
-      className="w-full flex items-center gap-3 px-3 py-2 rounded-r-[9px] transition-all duration-200 group relative"
-      style={{
-        background: isActive ? 'rgba(79,255,176,0.07)' : 'transparent',
-        borderLeft: isActive ? '2px solid #4fffb0' : '2px solid transparent',
-        marginLeft: '-1px',
-      }}
+      className={`
+        w-full flex items-center gap-3 py-2 rounded-md
+        cursor-pointer transition-colors relative group
+        ${collapsed ? 'justify-center px-0' : 'px-3'}
+        ${
+          isActive
+            ? 'bg-study-surface border border-study-border/30'
+            : 'hover:bg-study-surface/50'
+        }
+      `}
     >
       <Icon
-        size={16}
-        style={{ color: isActive ? '#4fffb0' : '#5a6478', flexShrink: 0 }}
-        className="transition-colors duration-200 group-hover:text-[#e8eaf0]"
+        size={18}
+        style={{
+          color: isActive
+            ? 'var(--theme-accent)'
+            : 'var(--theme-muted)',
+          flexShrink: 0,
+        }}
       />
 
       {!collapsed && (
         <>
           <span
-            className="text-xs flex-1 text-left transition-colors duration-200"
-            style={{ color: isActive ? '#e8eaf0' : '#5a6478' }}
+            className="text-[14px] flex-1 text-left truncate"
+            style={{ color: isActive ? 'var(--theme-text)' : 'var(--theme-muted)' }}
           >
             {label}
           </span>
+
           {badge !== undefined && badge > 0 && (
-            <span className="text-[10px] bg-[rgba(79,255,176,0.1)] text-[#4fffb0] rounded-full px-1.5 py-0.5">
+            <span className="text-[10px] font-bold bg-study-bg text-study-muted rounded-full px-1.5 min-w-[18px] h-[18px] flex items-center justify-center border border-study-border">
               {badge}
             </span>
           )}
         </>
       )}
 
-      {/* Tooltip cuando está colapsado */}
+      {/* Tooltip purely CSS when collapsed */}
       {collapsed && (
         <div className="
-          absolute left-[52px] z-50 px-3 py-1.5
-          bg-[#111620] border border-[#1e2530] rounded-lg
-          text-[#e8eaf0] text-xs font-medium whitespace-nowrap
+          absolute left-[64px] z-50 px-2 py-1
+          bg-study-text border border-study-border rounded-md
+          text-study-bg text-[11px] font-medium whitespace-nowrap
           pointer-events-none opacity-0 group-hover:opacity-100
-          transition-opacity duration-150
+          transition-opacity duration-200 shadow-xl
         ">
           {label}
-          <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-[#111620] border-l border-b border-[#1e2530] rotate-45" />
         </div>
       )}
     </button>
   );
 }
+
+export default SidebarNavItem;

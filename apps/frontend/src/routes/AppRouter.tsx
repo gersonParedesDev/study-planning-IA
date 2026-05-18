@@ -4,23 +4,35 @@ import { PATHS } from './paths';
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 
-import {LoginPage} from '../pages/LoginPage';
-import {RegisterPage} from '../pages/RegisterPage';
+import { LoginPage } from '../pages/LoginPage';
+import { RegisterPage } from '../pages/RegisterPage';
 import HomePage from '../pages/HomePage';
+
+// estas páginas las creamos después
+const SubjectDetailPage = () => <div>Subject Detail — coming soon</div>;
+const SubjectsNewPage = () => <div>New Subject — coming soon</div>;
+const ExamsPage = () => <div>Parciales — coming soon</div>;
+const ProgressPage = () => <div>Progreso — coming soon</div>;
+const ProfilePage = () => <div>Perfil — coming soon</div>;
+const SettingsPage = () => <div>Configuración — coming soon</div>;
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Rutas públicas - solo sin login */}
         <Route element={<PublicRoute />}>
           <Route path={PATHS.LOGIN} element={<LoginPage />} />
           <Route path={PATHS.REGISTER} element={<RegisterPage />} />
-
         </Route>
 
         <Route element={<PrivateRoute />}>
-            <Route path={PATHS.HOMEPAGE} element={<HomePage />} />
+          <Route path={PATHS.HOMEPAGE}        element={<HomePage />} />
+          <Route path={PATHS.SUBJECTS_NEW}    element={<SubjectsNewPage />} />
+          <Route path={PATHS.SUBJECT_DETAIL}  element={<SubjectDetailPage />} />
+          <Route path={PATHS.EXAMS}           element={<ExamsPage />} />
+          <Route path={PATHS.PROGRESS}        element={<ProgressPage />} />
+          <Route path={PATHS.PROFILE}         element={<ProfilePage />} />
+          <Route path={PATHS.SETTINGS}        element={<SettingsPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to={PATHS.LOGIN} replace />} />

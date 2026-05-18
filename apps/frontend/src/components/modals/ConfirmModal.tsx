@@ -24,13 +24,12 @@ export function ConfirmModal({
   return (
     <BaseModal open={open} onClose={onClose}>
       <div
-        className="w-full max-w-[380px] rounded-[20px] p-8 flex flex-col gap-6"
-        style={{ background: "#111620", border: "1px solid #1e2530" }}
+        className="w-full max-w-[380px] rounded-[20px] p-8 flex flex-col gap-6 bg-study-card border border-study-border"
       >
         {/* Header */}
         <div className="flex flex-col gap-2">
-          <h2 className="text-lg font-bold text-[#e8eaf0]">{title}</h2>
-          <p className="text-sm text-[#5a6478]">{description}</p>
+          <h2 className="text-lg font-bold text-study-text">{title}</h2>
+          <p className="text-sm text-study-muted">{description}</p>
         </div>
 
         {/* Buttons */}
@@ -38,18 +37,17 @@ export function ConfirmModal({
           <button
             onClick={onClose}
             disabled={loading}
-            className="flex-1 py-3 rounded-[10px] text-sm font-semibold text-[#5a6478] transition-all hover:text-[#e8eaf0]"
-            style={{ background: "#0e1219", border: "1px solid #1e2530" }}
+            className="flex-1 py-3 rounded-[10px] text-sm font-semibold text-study-muted hover:text-study-text bg-study-surface border border-study-border"
           >
             Cancelar
           </button>
           <button
             onClick={onConfirm}
             disabled={loading}
-            className="flex-1 py-3 rounded-[10px] text-sm font-semibold transition-all"
+            className="flex-1 py-3 rounded-[10px] text-sm font-semibold"
             style={{
-              background: danger ? "#ff4444" : "#4fffb0",
-              color: danger ? "#fff" : "#080b10",
+              background: danger ? "#cf222e" : "var(--theme-accent)",
+              color: danger ? "#fff" : "var(--theme-bg)",
               opacity: loading ? 0.6 : 1,
               cursor: loading ? "not-allowed" : "pointer",
             }}

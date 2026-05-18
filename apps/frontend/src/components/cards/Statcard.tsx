@@ -1,84 +1,47 @@
-// ─── Types ───────────────────────────────────────────────────────────────────
+import type { LucideIcon } from 'lucide-react';
 
-export type StatCardProps = {
-  icon: string;
+type StatCardVariant = 'activity'| 'default' | 'warning' | 'danger' | 'info' | 'purple';
+
+type Props = {
+  icon: LucideIcon;
   value: string | number;
   label: string;
-  trend?: string;
+  sub?: string;
+  variant?: StatCardVariant;
 };
 
-// ─── StatCard ─────────────────────────────────────────────────────────────────
+const VARIANT_STYLES: Record<StatCardVariant, {
+  iconColor: string;
+}> = {
+  activity: {iconColor: '#ffffff'},
+  default: { iconColor: '#37352f' },
+  info:    { iconColor: '#0969da' },
+  purple:  { iconColor: '#8250df' },
+  warning: { iconColor: '#bc4c00' },
+  danger:  { iconColor: '#cf222e' },
+};
 
-export function StatCard({ icon, value, label, trend }: StatCardProps) {
+export function StatCard({ icon: Icon, value, label, sub, variant = 'default' }: Props) {
+  const s = VARIANT_STYLES[variant];
+
   return (
-    <div
-      className="
-        flex flex-col gap-3 p-5
-        bg-[#111620] border border-[#1e2530] rounded-2xl
-        transition-all duration-200 hover:border-[#2a3545]
-        cursor-default select-none
-      "
-    >
-      {/* Top row */}
-      <div className="flex items-center justify-between">
-        {/* Icon */}
-        <div
-          className="
-            w-9 h-9 rounded-[9px] text-base
-            flex items-center justify-center
-            bg-[rgba(79,255,176,0.07)] border border-[rgba(79,255,176,0.1)]
-          "
-        >
-          {icon}
-        </div>
-
-        {/* Trend badge */}
-        {trend && (
-          <span
-            className="
-              text-[11px] font-medium text-[#4fffb0]
-              bg-[rgba(79,255,176,0.08)] px-2 py-0.5 rounded-full
-            "
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
-          >
-            {trend}
+    <div className="flat-card flex items-center gap-4 px-5 py-4">
+      <div className="flex items-center justify-center flex-shrink-0">
+        <Icon size={20} style={{ color: s.iconColor }} />
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <span className="text-[20px] font-bold leading-tight text-study-text">
+          {value}
+        </span>
+        <span className="text-[12px] font-medium text-study-muted">
+          {label}
+        </span>
+        {sub && (
+          <span className="text-[11px] text-study-muted">
+            {sub}
           </span>
         )}
       </div>
-
-      {/* Value + label */}
-      <div>
-        <p
-          className="text-[28px] font-extrabold leading-none tracking-tight text-[#e8eaf0]"
-          style={{ fontFamily: "'Syne', sans-serif", letterSpacing: "-1px" }}
-        >
-          {value}
-        </p>
-        <p
-          className="text-xs text-[#5a6478] mt-1"
-          style={{ fontFamily: "'DM Sans', sans-serif" }}
-        >
-          {label}
-        </p>
-      </div>
     </div>
   );
 }
-
-// ─── StatCardGrid ─────────────────────────────────────────────────────────────
-
-export type StatCardGridProps = {
-  cards: StatCardProps[];
-};
-
-export function StatCardGrid({ cards }: StatCardGridProps) {
-  return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      {cards.map((card, i) => (
-        <StatCard key={i} {...card} />
-      ))}
-    </div>
-  );
-}
-
-export default StatCard;

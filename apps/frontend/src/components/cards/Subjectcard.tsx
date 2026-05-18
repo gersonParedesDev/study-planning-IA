@@ -1,276 +1,209 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { COLOR_MAP, type SubjectColor } from '../../styles/colors';
+import { useUpdateSubject } from '../../hooks/useUpdateSubject';
+import { Pencil, Trash2 } from 'lucide-react';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-
-export type SubjectColor =
-  | "green"
-  | "blue"
-  | "purple"
-  | "orange"
-  | "cyan"
-  | "pink";
+export type { SubjectColor };
 
 export type SubjectCardProps = {
-  icon: string;
+  id: string; // Required for updates
   name: string;
-  description: string;
-  progress: number;        // 0–100
-  tags?: string[];
-  topicsCount?: number;
+  description?: string;
+  progress?: number;
+  area?: string;
+  examDaysLeft?: number | null;
   color?: SubjectColor;
   onClick?: () => void;
   onMenuClick?: () => void;
+  onUpdate?: (name: string, description: string) => void;
 };
-
-// ─── Color config ─────────────────────────────────────────────────────────────
-
-const COLOR_MAP: Record<
-  SubjectColor,
-  {
-    bar: string;           // gradient for top bar
-    fill: string;          // gradient for progress fill
-    pct: string;           // text color for percentage
-    icon: string;          // icon bg
-    iconBorder: string;    // icon border
-  }
-> = {
-  green: {
-    bar:         "linear-gradient(90deg, #4fffb0, #00e5ff)",
-    fill:        "linear-gradient(90deg, #4fffb0, #00e5ff)",
-    pct:         "#4fffb0",
-    icon:        "rgba(79,255,176,0.1)",
-    iconBorder:  "rgba(79,255,176,0.15)",
-  },
-  blue: {
-    bar:         "linear-gradient(90deg, #63a0ff, #a78bff)",
-    fill:        "linear-gradient(90deg, #63a0ff, #a78bff)",
-    pct:         "#63a0ff",
-    icon:        "rgba(99,160,255,0.1)",
-    iconBorder:  "rgba(99,160,255,0.15)",
-  },
-  purple: {
-    bar:         "linear-gradient(90deg, #a78bff, #ff6eb4)",
-    fill:        "linear-gradient(90deg, #a78bff, #ff6eb4)",
-    pct:         "#a78bff",
-    icon:        "rgba(167,139,255,0.1)",
-    iconBorder:  "rgba(167,139,255,0.15)",
-  },
-  orange: {
-    bar:         "linear-gradient(90deg, #ffb347, #ff6b6b)",
-    fill:        "linear-gradient(90deg, #ffb347, #ff6b6b)",
-    pct:         "#ffb347",
-    icon:        "rgba(255,179,71,0.1)",
-    iconBorder:  "rgba(255,179,71,0.15)",
-  },
-  cyan: {
-    bar:         "linear-gradient(90deg, #00e5ff, #4fffb0)",
-    fill:        "linear-gradient(90deg, #00e5ff, #4fffb0)",
-    pct:         "#00e5ff",
-    icon:        "rgba(0,229,255,0.1)",
-    iconBorder:  "rgba(0,229,255,0.15)",
-  },
-  pink: {
-    bar:         "linear-gradient(90deg, #ff6eb4, #ffb347)",
-    fill:        "linear-gradient(90deg, #ff6eb4, #ffb347)",
-    pct:         "#ff6eb4",
-    icon:        "rgba(255,110,180,0.1)",
-    iconBorder:  "rgba(255,110,180,0.15)",
-  },
-};
-
-// ─── SubjectCard ──────────────────────────────────────────────────────────────
 
 export function SubjectCard({
-  icon,
-  name,
-  description,
-  progress,
-  tags = [],
-  topicsCount = 0,
-  color = "green",
+  id,
+  name: initialName,
+  description: initialDescription,
+  progress = 0,
+  area,
+  examDaysLeft,
+  color, // No default color, uses theme standard
   onClick,
   onMenuClick,
+  onUpdate,
 }: SubjectCardProps) {
   const [hovered, setHovered] = useState(false);
-  const c = COLOR_MAP[color];
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState(initialName);
+  const [description, setDescription] = useState(initialDescription || '');
+
+  const { editSubject} = useUpdateSubject();
+
+  // If color prop is provided, use the map; otherwise use standard theme variables
+  const c = color ? COLOR_MAP[color] : {
+    bg: 'var(--theme-card)',
+    text: 'var(--theme-text)',
+    border: 'rgba(128, 128, 128, 0.2)'
+  };
+  
   const pct = Math.min(100, Math.max(0, Math.round(progress)));
+
+  const handleSave = async (e?: React.FocusEvent | React.KeyboardEvent | React.MouseEvent) => {
+    e?.stopPropagation();
+    
+    // Si no ha cambiado nada, simplemente cerramos edición
+    if (name === initialName && description === (initialDescription || '')) {
+      setIsEditing(false);
+      return;
+    }
+
+    const prevName = initialName;
+    const prevDesc = initialDescription;
+
+    setIsEditing(false);
+    
+    try {
+      const updated = await editSubject(id, { name, description });
+      if (updated) {
+        onUpdate?.(name, description);
+      }
+    } catch (err) {
+      setName(prevName);
+      setDescription(prevDesc || '');
+      alert('Error al guardar cambios.');
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSave(e);
+    }
+    if (e.key === 'Escape') {
+      setName(initialName);
+      setDescription(initialDescription || '');
+      setIsEditing(false);
+    }
+  };
+
+  const toggleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsEditing(true);
+  };
+
+
+  const examColor =
+    examDaysLeft === null || examDaysLeft === undefined ? '#787774'
+    : examDaysLeft <= 30  ? '#cf222e'
+    : examDaysLeft <= 60  ? '#bc4c00'
+    : '#0b6e4f';
 
   return (
     <div
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="
-        relative flex flex-col gap-4 p-6 rounded-2xl cursor-pointer
-        bg-[#111620] border border-[#1e2530] overflow-hidden
-        transition-all duration-300
-      "
-      style={{
-        transform: hovered ? "translateY(-3px)" : "translateY(0)",
-        borderColor: hovered ? "#2a3545" : "#1e2530",
-        background: hovered ? "#151c28" : "#111620",
-        boxShadow: hovered ? "0 12px 40px rgba(0,0,0,0.3)" : "none",
+      className="flat-card flex flex-col h-full cursor-pointer overflow-hidden"
+      style={{ 
+        background: hovered ? `color-mix(in srgb, ${c.bg}, var(--theme-text) 5%)` : c.bg,
+        borderColor: hovered ? '#ffffff' : 'rgba(128, 128, 128, 0.2)',
+        boxShadow: hovered ? '0 0 15px rgba(255, 255, 255, 0.1)' : 'none'
       }}
     >
-      {/* Color top bar */}
-      <div
-        className="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl"
-        style={{
-          background: c.bar,
-          opacity: hovered ? 1 : 0.7,
-          transition: "opacity 0.2s",
-        }}
-      />
-
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div
-          className="w-11 h-11 rounded-xl flex items-center justify-center text-[22px] flex-shrink-0"
-          style={{ background: c.icon, border: `1px solid ${c.iconBorder}` }}
-        >
-          {icon}
-        </div>
-
-        <button
-          onClick={(e) => { e.stopPropagation(); onMenuClick?.(); }}
-          className="
-            text-lg text-[#5a6478] bg-transparent border-none cursor-pointer
-            px-1 py-0.5 rounded-md transition-all duration-200
-            hover:text-[#e8eaf0]
-          "
-          style={{ opacity: hovered ? 1 : 0, transition: "opacity 0.2s, color 0.2s" }}
-        >
-          ⋯
-        </button>
-      </div>
-
-      {/* Title + desc */}
-      <div>
-        <p
-          className="text-base font-bold tracking-tight text-[#e8eaf0] mb-1"
-          style={{ fontFamily: "'Syne', sans-serif", letterSpacing: "-0.3px" }}
-        >
-          {name}
-        </p>
-        <p
-          className="text-xs text-[#5a6478] leading-relaxed line-clamp-2"
-          style={{ fontFamily: "'DM Sans', sans-serif" }}
-        >
-          {description}
-        </p>
-      </div>
-
-      {/* Progress */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <span
-            className="text-[11px] text-[#5a6478]"
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
-          >
-            Progreso del temario
-          </span>
-          <span
-            className="text-xs font-semibold"
-            style={{ color: c.pct, fontFamily: "'Syne', sans-serif" }}
-          >
-            {pct}%
-          </span>
-        </div>
-
-        {/* Bar */}
-        <div className="h-1 bg-[#1e2530] rounded-full overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all duration-700"
-            style={{ width: `${pct}%`, background: c.fill }}
-          />
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div
-        className="flex items-center justify-between pt-1 border-t border-[#1e2530]"
-      >
-        <div className="flex gap-1.5 flex-wrap">
-          {tags.map((tag) => (
+      <div className="p-5 flex flex-col h-full gap-4">
+        <div className="flex items-center justify-between pb-2 border-b border-study-border/50">
+          {area && (
             <span
-              key={tag}
-              className="
-                text-[10px] font-medium text-[#5a6478]
-                border border-[#1e2530] rounded-full px-2 py-0.5
-              "
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
+              className="text-[11px] font-medium rounded-[4px] px-2 py-0.5 bg-study-surface text-study-muted border border-study-border"
             >
-              {tag}
+              {area}
             </span>
-          ))}
+          )}
+          <button
+            onClick={(e) => { e.stopPropagation(); onMenuClick?.(); }}
+            className="cursor-pointer p-1.5 rounded-md text-study-muted hover:text-red-500 hover:bg-red-500/10 transition-colors ml-auto"
+            style={{ opacity: hovered && !isEditing ? 1 : 0 }}
+            title="Eliminar materia"
+          >
+            <Trash2 size={16} />
+          </button>
         </div>
-        <span
-          className="text-[11px] text-[#5a6478] whitespace-nowrap"
-          style={{ fontFamily: "'DM Sans', sans-serif" }}
-        >
-          📝 {topicsCount} temas
-        </span>
+
+        {/* Name + description */}
+        <div className="flex-1 flex flex-col gap-2">
+          {isEditing ? (
+            <div 
+              className="flex flex-col gap-2" 
+              onBlur={() => handleSave()}
+            >
+              <div className="relative">
+                <input
+                  autoFocus
+                  className="text-[15px] font-bold bg-transparent border-b border-study-accent outline-none w-full pr-5"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 text-study-accent/50">
+                  <Pencil size={12} />
+                </div>
+              </div>
+              <textarea
+                className="text-[13px] bg-transparent border-b border-study-border outline-none w-full resize-none"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onBlur={() => handleSave()}
+                onClick={(e) => e.stopPropagation()}
+                rows={2}
+              />
+            </div>
+          ) : (
+            <div 
+              className="flex-1 flex flex-col gap-2 cursor-text group/text" 
+              onClick={toggleEdit}
+            >
+              <p className="text-[15px] font-bold text-study-text leading-tight">
+                {name}
+              </p>
+              {description && (
+                <p className="text-[13px] text-study-muted leading-snug line-clamp-2">
+                  {description}
+                </p>
+              )}
+              {!description && (
+                <p className="text-[13px] text-study-muted italic opacity-0 group-hover/text:opacity-50 transition-opacity">
+                  Añadir descripción...
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="flex flex-col gap-3 pt-4">
+          {/* Progress bar */}
+          <div className="flex items-center gap-3">
+            <div className="progress-bar-container flex-1">
+              <div
+                className="progress-bar-fill transition-all duration-500"
+                style={{ width: `${pct}%`}}
+              />
+            </div>
+            <span className="text-[12px] font-bold">
+              {pct}%
+            </span>
+          </div>
+
+          {/* Exam days */}
+          {examDaysLeft !== undefined && (
+            <div className="flex items-center gap-1.5 text-[11px] font-medium" style={{ color: examColor }}>
+              <span>📅</span>
+              <span>{examDaysLeft === null ? 'Sin fecha' : `${examDaysLeft} días para el examen`}</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  );
-}
-
-// ─── AddSubjectCard ───────────────────────────────────────────────────────────
-
-export type AddSubjectCardProps = {
-  onClick?: () => void;
-};
-
-export function AddSubjectCard({ onClick }: AddSubjectCardProps) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="
-        flex flex-col items-center justify-center gap-3 p-6 rounded-2xl
-        bg-transparent text-left w-full cursor-pointer h-full
-        transition-all duration-300
-      "
-      style={{
-        border: `2px dashed ${hovered ? "rgba(79,255,176,0.4)" : "#1e2530"}`,
-        background: hovered ? "rgba(79,255,176,0.03)" : "transparent",
-        transform: hovered ? "translateY(-3px)" : "translateY(0)",
-      }}
-    >
-      {/* Plus icon */}
-      <div
-        className="w-13 h-13 rounded-[14px] flex items-center justify-center text-2xl transition-all duration-200"
-        style={{
-          width: 52, height: 52,
-          background: hovered ? "rgba(79,255,176,0.07)" : "#111620",
-          border: `1px solid ${hovered ? "rgba(79,255,176,0.25)" : "#1e2530"}`,
-          color: hovered ? "#4fffb0" : "#5a6478",
-        }}
-      >
-        +
-      </div>
-
-      <div className="text-center">
-        <p
-          className="text-sm font-bold transition-colors duration-200"
-          style={{
-            fontFamily: "'Syne', sans-serif",
-            color: hovered ? "#4fffb0" : "#7a8499",
-          }}
-        >
-          Nueva materia
-        </p>
-        <p
-          className="text-xs text-[#5a6478] leading-relaxed mt-1 max-w-[150px]"
-          style={{ fontFamily: "'DM Sans', sans-serif" }}
-        >
-          Agrega una materia y empieza a planificar con IA
-        </p>
-      </div>
-    </button>
   );
 }
 

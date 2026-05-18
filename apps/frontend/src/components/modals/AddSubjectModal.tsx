@@ -81,23 +81,21 @@ export function AddSubjectModal({ open, onClose, onSuccess }: Props) {
   return (
     <BaseModal open={open} onClose={onClose}>
       <div
-        className="w-full max-w-[520px] rounded-[20px] p-8 flex flex-col gap-6 max-h-[90vh] overflow-y-auto"
-        style={{ background: "#111620", border: "1px solid #1e2530" }}
+        className="w-full max-w-[520px] rounded-[20px] p-8 flex flex-col gap-6 max-h-[90vh] overflow-y-auto bg-study-card border border-study-border"
       >
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-[#e8eaf0]">
+            <h2 className="text-xl font-bold tracking-tight text-study-text">
               Nueva materia
             </h2>
-            <p className="text-xs text-[#5a6478] mt-0.5">
+            <p className="text-xs text-study-muted mt-0.5">
               Completá los datos y subí al menos un recurso
             </p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-sm text-[#5a6478] hover:text-[#e8eaf0] transition-colors"
-            style={{ background: "#0e1219", border: "1px solid #1e2530" }}
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-sm text-study-muted hover:text-study-text bg-study-surface border border-study-border transition-colors"
           >
             ✕
           </button>
@@ -105,34 +103,26 @@ export function AddSubjectModal({ open, onClose, onSuccess }: Props) {
 
         {/* Nombre */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-[11px] uppercase tracking-wider text-[#5a6478]">
+          <label className="text-[11px] uppercase tracking-wider text-study-muted">
             Nombre de la materia *
           </label>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Ej: Álgebra Lineal"
-            className="rounded-[10px] px-3.5 py-3 text-sm text-[#e8eaf0] outline-none transition-all"
-            style={{
-              background: "#0e1219",
-              border: `1px solid ${name.trim() ? "#4fffb0" : "#1e2530"}`,
-            }}
+            className="rounded-[10px] px-3.5 py-3 text-sm text-study-text outline-none bg-study-surface border border-study-border focus:border-study-accent"
           />
         </div>
 
         {/* Área */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-[11px] uppercase tracking-wider text-[#5a6478]">
+          <label className="text-[11px] uppercase tracking-wider text-study-muted">
             Área *
           </label>
           <select
             value={areaId}
             onChange={(e) => setAreaId(e.target.value)}
-            className="rounded-[10px] px-3.5 py-3 text-sm text-[#e8eaf0] outline-none transition-all cursor-pointer"
-            style={{
-              background: "#0e1219",
-              border: `1px solid ${areaId ? "#4fffb0" : "#1e2530"}`,
-            }}
+            className="rounded-[10px] px-3.5 py-3 text-sm text-study-text outline-none cursor-pointer bg-study-surface border border-study-border focus:border-study-accent"
           >
             <option value="" disabled>
               {loadingAreas ? "Cargando áreas..." : "Seleccioná un área"}
@@ -148,12 +138,12 @@ export function AddSubjectModal({ open, onClose, onSuccess }: Props) {
         {/* Recursos */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <label className="text-[11px] uppercase tracking-wider text-[#5a6478]">
+            <label className="text-[11px] uppercase tracking-wider text-study-muted">
               Recursos * (mín. 1)
             </label>
             <button
               onClick={addResource}
-              className="text-xs text-[#4fffb0] hover:opacity-70 transition-opacity"
+              className="text-xs text-study-accent hover:opacity-70 transition-opacity"
             >
               + Agregar otro
             </button>
@@ -162,18 +152,17 @@ export function AddSubjectModal({ open, onClose, onSuccess }: Props) {
           {resources.map((resource, index) => (
             <div
               key={index}
-              className="flex flex-col gap-2 p-4 rounded-[12px]"
-              style={{ background: "#0e1219", border: "1px solid #1e2530" }}
+              className="flex flex-col gap-2 p-4 rounded-[12px] bg-study-surface border border-study-border"
             >
               {/* Header del recurso */}
               <div className="flex items-center justify-between">
-                <span className="text-xs text-[#5a6478]">
+                <span className="text-xs text-study-muted">
                   Recurso {index + 1}
                 </span>
                 {resources.length > 1 && (
                   <button
                     onClick={() => removeResource(index)}
-                    className="text-xs text-[#ff6b6b] hover:opacity-70 transition-opacity"
+                    className="text-xs text-red-500 hover:opacity-70 transition-opacity"
                   >
                     Eliminar
                   </button>
@@ -185,8 +174,7 @@ export function AddSubjectModal({ open, onClose, onSuccess }: Props) {
                 value={resource.title}
                 onChange={(e) => updateResource(index, "title", e.target.value)}
                 placeholder="Título del recurso"
-                className="rounded-[8px] px-3 py-2.5 text-sm text-[#e8eaf0] outline-none"
-                style={{ background: "#111620", border: "1px solid #1e2530" }}
+                className="rounded-[8px] px-3 py-2.5 text-sm text-study-text outline-none bg-study-card border border-study-border"
               />
 
               {/* Tipo + Archivo */}
@@ -194,8 +182,7 @@ export function AddSubjectModal({ open, onClose, onSuccess }: Props) {
                 <select
                   value={resource.resource_type}
                   onChange={(e) => updateResource(index, "resource_type", e.target.value)}
-                  className="flex-1 rounded-[8px] px-3 py-2.5 text-sm text-[#e8eaf0] outline-none cursor-pointer"
-                  style={{ background: "#111620", border: "1px solid #1e2530" }}
+                  className="flex-1 rounded-[8px] px-3 py-2.5 text-sm text-study-text outline-none cursor-pointer bg-study-card border border-study-border"
                 >
                   {RESOURCE_TYPES.map((t) => (
                     <option key={t.value} value={t.value}>
@@ -205,11 +192,11 @@ export function AddSubjectModal({ open, onClose, onSuccess }: Props) {
                 </select>
 
                 <label
-                  className="flex-1 flex items-center justify-center gap-2 rounded-[8px] px-3 py-2.5 text-sm cursor-pointer transition-all"
+                  className="flex-1 flex items-center justify-center gap-2 rounded-[8px] px-3 py-2.5 text-sm cursor-pointer border-dashed"
                   style={{
-                    background: "#111620",
-                    border: `1px dashed ${resource.file ? "#4fffb0" : "#1e2530"}`,
-                    color: resource.file ? "#4fffb0" : "#5a6478",
+                    background: "var(--theme-card)",
+                    border: `1px dashed ${resource.file ? "var(--theme-accent)" : "var(--theme-border)"}`,
+                    color: resource.file ? "var(--theme-accent)" : "var(--theme-muted)",
                   }}
                 >
                   <span>{resource.file ? "✓ " + resource.file.name : "📁 Subir archivo"}</span>
@@ -230,7 +217,7 @@ export function AddSubjectModal({ open, onClose, onSuccess }: Props) {
 
         {/* Error */}
         {error && (
-          <p className="text-xs text-[#ff6b6b] text-center">{error}</p>
+          <p className="text-xs text-red-500 text-center">{error}</p>
         )}
 
         {/* Submit */}
@@ -239,8 +226,8 @@ export function AddSubjectModal({ open, onClose, onSuccess }: Props) {
           disabled={!isValid || loading}
           className="w-full py-3.5 rounded-[10px] text-sm font-semibold transition-all"
           style={{
-            background: isValid && !loading ? "#4fffb0" : "#1e2530",
-            color: isValid && !loading ? "#080b10" : "#5a6478",
+            background: isValid && !loading ? "var(--theme-accent)" : "var(--theme-surface)",
+            color: isValid && !loading ? "var(--theme-bg)" : "var(--theme-muted)",
             cursor: isValid && !loading ? "pointer" : "not-allowed",
           }}
         >
