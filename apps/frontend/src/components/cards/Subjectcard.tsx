@@ -49,7 +49,9 @@ export function SubjectCard({
   const handleSave = async (e?: React.FocusEvent | React.KeyboardEvent | React.MouseEvent) => {
     e?.stopPropagation();
     
-    // Si no ha cambiado nada, simplemente cerramos edición
+    // Si no ha cambiado nada o ya estamos guardando, simplemente cerramos edición
+    if (!isEditing) return;
+
     if (name === initialName && description === (initialDescription || '')) {
       setIsEditing(false);
       return;
@@ -61,9 +63,10 @@ export function SubjectCard({
     setIsEditing(false);
     
     try {
+      // Usamos los valores actuales del estado
       const updated = await editSubject(id, { name, description });
       if (updated) {
-        onUpdate?.(name, description);
+        onUpdate?.(updated.name, updated.description || '');
       }
     } catch (err) {
       setName(prevName);
@@ -132,7 +135,12 @@ export function SubjectCard({
           {isEditing ? (
             <div 
               className="flex flex-col gap-2" 
-              onBlur={() => handleSave()}
+              onBlur={(e) => {
+                // Solo guardamos si el foco se mueve fuera del contenedor de edición
+                if (!e.currentTarget.contains(e.relatedTarget)) {
+                  handleSave();
+                }
+              }}
             >
               <div className="relative">
                 <input
@@ -151,8 +159,17 @@ export function SubjectCard({
                 className="text-[13px] bg-transparent border-b border-study-border outline-none w-full resize-none"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                onKeyDown={handleKeyDown}
-                onBlur={() => handleSave()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    // En el textarea, Enter guarda, Shift+Enter hace nueva línea
+                    e.preventDefault();
+                    handleSave();
+                  } else if (e.key === 'Escape') {
+                    setName(initialName);
+                    setDescription(initialDescription || '');
+                    setIsEditing(false);
+                  }
+                }}
                 onClick={(e) => e.stopPropagation()}
                 rows={2}
               />
