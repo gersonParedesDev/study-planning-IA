@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { BookOpen, CalendarDays, Settings, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { BookOpen, CalendarDays, Settings, ChevronsLeft, ChevronsRight, LogOut } from 'lucide-react';
 import { SidebarNavItem } from './SidebarNavItem';
 import { PATHS } from '../../routes/paths';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const NAV_ITEMS = [
   {
@@ -28,9 +29,15 @@ type Props = {
 };
 
 export function Sidebar({ subjectCount = 0 }: Props) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    navigate(PATHS.LOGIN);
+  };
 
   // Lógica de nombres capitalizados y mayúsculas
   const firstname = user?.firstname
@@ -133,6 +140,18 @@ export function Sidebar({ subjectCount = 0 }: Props) {
           />
         ))}
       </nav>
+
+      {/* Logout Button */}
+      <div className="px-3 pb-4">
+        <button
+          onClick={handleLogout}
+          className={`flex items-center gap-3 w-full p-2.5 rounded-lg text-study-muted hover:text-red-500 hover:bg-red-500/10 transition-all cursor-pointer ${collapsed ? 'justify-center' : ''}`}
+          title="Cerrar sesión"
+        >
+          <LogOut size={20} />
+          {!collapsed && <span className="text-[14px] font-medium">Cerrar sesión</span>}
+        </button>
+      </div>
 
       {/* Footer: Simple Border (No redundant card) */}
       <div className="mt-auto border-t border-study-border/30 p-2 text-center">
