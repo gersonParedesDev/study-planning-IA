@@ -9,7 +9,7 @@ export const RegisterPage: React.FC = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [plan, setPlan] = useState<'free' | 'pro'>('free');
+  const [plan, setPlan] = useState<'FREE' | 'PRO'>('FREE');
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   
   const [isLoading, setIsLoading] = useState(false);
@@ -135,8 +135,8 @@ export const RegisterPage: React.FC = () => {
             <div className="text-[11px] font-medium uppercase tracking-wider text-study-muted mb-2.5">Elige tu plan</div>
             <div className="grid grid-cols-2 gap-2.5 mb-6">
               {/* Plan Free */}
-              <label className={`relative bg-study-card border rounded-xl p-4 cursor-pointer ${plan === 'free' ? 'border-study-accent bg-study-accent/5' : 'border-study-border hover:border-study-accent/30'}`}>
-                <input type="radio" name="plan" value="free" checked={plan === 'free'} onChange={() => setPlan('free')} className="hidden" />
+              <label className={`relative bg-study-card border rounded-xl p-4 cursor-pointer ${plan === 'FREE' ? 'border-study-accent bg-study-accent/5' : 'border-study-border hover:border-study-accent/30'}`}>
+                <input type="radio" name="plan" value="FREE" checked={plan === 'FREE'} onChange={() => setPlan('FREE')} className="hidden" />
                 <div className="font-syne text-sm font-bold mb-1 text-study-text">Gratuito</div>
                 <div className="text-xl font-bold font-syne text-study-accent tracking-tight">$0 <span className="text-xs font-normal text-study-muted">/mes</span></div>
                 <div className="mt-2 flex flex-col gap-1">
@@ -146,8 +146,8 @@ export const RegisterPage: React.FC = () => {
               </label>
 
               {/* Plan Pro */}
-              <label className={`relative bg-study-card border rounded-xl p-4 cursor-pointer ${plan === 'pro' ? 'border-study-accent bg-study-accent/5' : 'border-study-border hover:border-study-accent/30'}`}>
-                <input type="radio" name="plan" value="pro" checked={plan === 'pro'} onChange={() => setPlan('pro')} className="hidden" />
+              <label className={`relative bg-study-card border rounded-xl p-4 cursor-pointer ${plan === 'PRO' ? 'border-study-accent bg-study-accent/5' : 'border-study-border hover:border-study-accent/30'}`}>
+                <input type="radio" name="plan" value="PRO" checked={plan === 'PRO'} onChange={() => setPlan('PRO')} className="hidden" />
                 <div className="absolute -top-px right-2.5 bg-study-accent text-study-bg text-[9px] font-bold uppercase tracking-wider py-1 px-2 rounded-b-md">Popular</div>
                 <div className="font-syne text-sm font-bold mb-1 text-study-text">Pro</div>
                 <div className="text-xl font-bold font-syne text-study-accent tracking-tight">$9 <span className="text-xs font-normal text-study-muted">/mes</span></div>

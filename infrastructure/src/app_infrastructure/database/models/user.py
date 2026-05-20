@@ -3,7 +3,7 @@ from typing import List, TYPE_CHECKING, Optional
 from datetime import datetime, timezone
 from app_domain.entities.user import PlanType
 from sqlalchemy import String, Integer, DateTime, Enum as SQLEnum
-from sqlalchemy.dialects.postgresql import UUID 
+from sqlalchemy import UUID 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 

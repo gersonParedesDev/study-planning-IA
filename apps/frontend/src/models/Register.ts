@@ -1,4 +1,4 @@
-export type PlanType = "free" | "pro";
+export type PlanType = "FREE" | "PRO";
 
 export interface RegisterData {
     firstName: string;

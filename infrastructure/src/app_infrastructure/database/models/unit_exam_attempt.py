@@ -2,8 +2,8 @@ from __future__ import annotations
 import uuid
 from typing import TYPE_CHECKING, Optional
 from datetime import datetime, timezone
-from sqlalchemy import Integer, Boolean, ForeignKey, DateTime
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy import Integer, Boolean, ForeignKey, DateTime, JSON
+from sqlalchemy import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 
@@ -18,7 +18,7 @@ class UnitExamAttemptModel(Base):
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     score: Mapped[int] = mapped_column(Integer, nullable=False)
     passed: Mapped[bool] = mapped_column(Boolean, default=False)
-    answers: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+    answers: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
     unit: Mapped["SubjectUnitModel"] = relationship(back_populates="exam_attempts")

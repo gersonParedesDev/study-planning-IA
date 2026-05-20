@@ -7,6 +7,7 @@ import { PublicRoute } from './PublicRoute';
 import { LoginPage } from '../pages/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage';
 import HomePage from '../pages/HomePage';
+import SettingsPage from '../pages/SettingsPage';
 
 // estas páginas las creamos después
 const SubjectDetailPage = () => <div>Subject Detail — coming soon</div>;
@@ -14,7 +15,6 @@ const SubjectsNewPage = () => <div>New Subject — coming soon</div>;
 const ExamsPage = () => <div>Parciales — coming soon</div>;
 const ProgressPage = () => <div>Progreso — coming soon</div>;
 const ProfilePage = () => <div>Perfil — coming soon</div>;
-const SettingsPage = () => <div>Configuración — coming soon</div>;
 
 export const AppRouter = () => {
   return (

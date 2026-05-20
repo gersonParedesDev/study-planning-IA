@@ -12,7 +12,7 @@ import { PATHS } from '../routes/paths';
 import { StatCard } from '../components/cards/Statcard';
 import { SubjectCard } from '../components/cards/Subjectcard';
 import AddCard from '../components/cards/Addcard';
-import { ThemeToggle, useTheme } from '../components/toggles/toogleColor';
+import { useTheme } from '../components/toggles/toogleColor';
 
 function getTodayLabel() {
   return new Date().toLocaleDateString('es-AR', {
@@ -86,13 +86,6 @@ export default function HomePage() {
             >
               Hola {user?.firstname}
             </h1>
-          </div>
-
-          {/* Toggle Color */}
-          <div className="flex items-center gap-2 rounded-[4px] px-3 py-1.5">
-            <span className="text-[12px] font-medium text-study-muted">
-            </span>
-            <ThemeToggle theme={theme} onToggle={toggle} />
           </div>
         </div>
 

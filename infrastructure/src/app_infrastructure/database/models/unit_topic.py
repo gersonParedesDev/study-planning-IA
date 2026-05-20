@@ -3,7 +3,7 @@ import uuid
 from typing import TYPE_CHECKING, Optional
 from datetime import datetime, timezone
 from sqlalchemy import String, Integer, Boolean, ForeignKey, DateTime, Text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 

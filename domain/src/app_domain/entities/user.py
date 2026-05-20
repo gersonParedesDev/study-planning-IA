@@ -7,8 +7,8 @@ from app_domain.entities.subject import Subject
 from pydantic import EmailStr
 
 class PlanType(str, Enum):
-    FREE = "free"
-    PRO = "pro"
+    FREE = "FREE"
+    PRO = "PRO"
 
 @dataclass
 class User:
@@ -36,6 +36,8 @@ class User:
                 raise ValueError("User must be over 12 years old.")
         if not isinstance(self.plan, PlanType):
             try:
-                self.plan = PlanType(self.plan)
+                # Normalizamos a mayúsculas para coincidir con el Enum/DB
+                val = self.plan.upper() if isinstance(self.plan, str) else self.plan
+                self.plan = PlanType(val)
             except ValueError:
                 raise ValueError(f"Invalid plan type. Must be one of: {[p.value for p in PlanType]}")
