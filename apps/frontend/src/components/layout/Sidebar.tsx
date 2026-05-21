@@ -14,7 +14,7 @@ const NAV_ITEMS = [
   {
     icon: CalendarDays,
     label: 'Calendario',
-    path: PATHS.EXAMS,
+    path: PATHS.CALENDAR,
   },
   {
     icon: Settings,

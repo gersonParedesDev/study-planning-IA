@@ -5,7 +5,7 @@ export const PATHS = {
   HOMEPAGE: '/home',
   SUBJECTS_NEW: '/subjects/new',
   SUBJECT_DETAIL: '/subjects/:id',
-  EXAMS: '/exams',
+  CALENDAR: '/calendar',
   PROGRESS: '/progress',
   PROFILE: '/profile',
   SETTINGS: '/settings',
